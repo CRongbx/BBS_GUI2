@@ -32,7 +32,7 @@ bool OrdinaryUser::DeletePost(Post * post,Board* const board)
 	return false;
 }
 
-Post * OrdinaryUser::CreatePost(string title, string content, Board * const board)
+Post * OrdinaryUser::CreatePost(QString title, QString content, Board * const board)
 {
 	Post* post = new Post();
 	board->AddPost(post);
@@ -46,26 +46,10 @@ Post * OrdinaryUser::CreatePost(string title, string content, Board * const boar
 	return post;
 }
 
-Comment * OrdinaryUser::CreateComment(string content, Post * const post)
+Comment * OrdinaryUser::CreateComment(QString content, Post * const post)
 {
 	Comment* com = new Comment(content);
 	post->AddComment(com);
 	com->SetOrdinaryUser(this);
 	return com;
-}
-
-void OrdinaryUser::LookBBS(BBS* const bbs)
-{
-//	bbs->ShowBBS();
-	bbs->ShowBoards();
-}
-
-void OrdinaryUser::LookBoard(Board * const board)
-{
-	board->Show();
-}
-
-void OrdinaryUser::LookPost(Post * const post)
-{
-	post->Show();
 }

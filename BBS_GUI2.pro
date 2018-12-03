@@ -34,7 +34,9 @@ SOURCES += \
     OrdinaryUser.cpp \
     Post.cpp \
     User.cpp \
-    MyTime.cpp
+    MyTime.cpp \
+    boardslabel.cpp \
+    postslabel.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -47,7 +49,9 @@ HEADERS += \
     OrdinaryUser.h \
     Post.h \
     User.h \
-    MyTime.h
+    MyTime.h \
+    boardslabel.h \
+    postslabel.h
 
 FORMS += \
         mainwindow.ui

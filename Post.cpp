@@ -1,6 +1,6 @@
 #include "Post.h"
 #include "MyTime.h"
-
+#include "Comment.h"
 
 Post::Post()
 {
@@ -12,19 +12,22 @@ Post::~Post()
 {
 }
 
-void Post::Show()
+QString Post::Show()
 {
-	cout << "Infomation of Post:" << endl;
-	cout << "创建时间：" << endl;
-	ShowTime(time);
-	cout << "Id:" << id << endl;
-	cout << "Title:" << title << endl;
-	cout << "Content:" << content << endl;
-//	cout << "发帖人：" << user->GetUserName() << endl;
-	cout << "评论：" << endl;
-	for (auto c : comments)
-		c->Show();
+  QString s = "id: "+QString::number(id)+"  ";
+  s += title + "  ";
+  s += "Poster: " + user->GetUserName()+"  ";
+  s += "Creating Time: "+ShowTime(time)+"  ";
+  s += "Num of Comment: " + QString::number(comments.size());
+  return s;
 }
+
+ vector<QString> Post::ShowComments(){
+    vector<QString> com;
+     for (auto c : comments)
+        com.push_back(c->Show());
+     return com;
+ }
 
 bool Post::AddComment(Comment * c)
 {
@@ -41,4 +44,12 @@ bool Post::DeleteComment(Comment * c)
 		}
 	}
 	return false;
+}
+
+Comment* Post::GetComment(QString name){
+    for(auto c : comments){
+        if(c->GetContent() == name)
+            return c;
+    }
+    return nullptr;
 }

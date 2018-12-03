@@ -2,8 +2,8 @@
 #define ADMINISTATOR_H
 #include "User.h"
 
-class OrdinaryUser;
 class Moderator;
+class Board;
 
 class Administator :
 	public User
@@ -13,7 +13,7 @@ private:
 public:
 	Administator();
 	~Administator();
-	virtual User* SetModerator(User* o)override final;	//将普通用户设置为版主
+    virtual User* SetModerator(User* o,Board* const b,BBS* bbs)override final;	//将普通用户设置为版主
 	virtual bool RepealModerator(User* o)override final;		//将版主撤销为管理员
 };
 

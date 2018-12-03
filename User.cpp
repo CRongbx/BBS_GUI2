@@ -1,6 +1,7 @@
 #include "User.h"
 #include "BBS.h"
 #include <iostream>
+#include <typeinfo>
 
 User::User()
 {
@@ -46,9 +47,7 @@ bool User::SignUp(QString name, QString pw, BBS * bbs)
 	password = pw;
     if (bbs->AddUser(this)) {
 		//BBS中无重复用户名的用户，可以注册
-        this->SetId(bbs->GetUsersSize());	//将该用户在论坛注册的序号作为用户的Id
-//		cout << "用户注册成功！" << endl;
-		
+        this->SetId(bbs->GetUsersSize());	//将该用户在论坛注册的序号作为用户的Id		
 		return true;
 	}
 	//delete user;
@@ -78,11 +77,13 @@ bool User::Logout(QString name, QString pw, BBS * bbs)
 	}
 }
 
-void User::Show()
+QString User::Show()
 {
-//	cout << "用户: " << endl;
-//	cout << "用户名：" << userName << endl;
-//	cout << "用户ID：" << id << endl;
+    QString s = "User Name: "+userName+"\n";
+    s = s + "ID: "+QString::number(id)+"\n";
+    s += "Class: "+QString::fromStdString(typeid(*this).name())+"\n";
+
+    return s;
 }
 
 

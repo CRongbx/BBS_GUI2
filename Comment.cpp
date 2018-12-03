@@ -3,7 +3,7 @@
 
 Comment::Comment()
 {
-	time = GetTime();
+    time = GetTime();
 }
 
 
@@ -11,11 +11,9 @@ Comment::~Comment()
 {
 }
 
-void Comment::Show()
+QString Comment::Show()
 {
-//	cout << "Comment:" << endl;
-//	cout << "创建于：" << endl;
-	ShowTime(time);
-//	cout << "内容：" << content << endl;
-//	cout << "评论人：" << user->GetUserName() << endl;
+    QString s = content+"\n";
+    s = s + ShowTime(time)+"\t"+ "Commentator: "+user->GetUserName();
+    return s;
 }

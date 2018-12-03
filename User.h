@@ -44,15 +44,12 @@ public:
 	//用户注销
     bool Logout(QString name, QString pw, BBS * bbs);
 	//查看用户信息
-	void Show();
+    QString Show();
 	/* 虚函数 */
 	virtual bool DeletePost(Post * post, Board* const board) { return false; }
-	virtual Post* CreatePost(string title, string content, Board* const board) { return nullptr; }
-	virtual Comment* CreateComment(string content, Post* const post) { return nullptr; }
-	virtual void LookBBS(BBS* const bbs) {}
-	virtual void LookBoard(Board* const board) {}							
-	virtual void LookPost(Post* const post) {}
-	virtual User* SetModerator(User* o) {	return nullptr;}
+    virtual Post* CreatePost(QString title, QString content, Board* const board) { return nullptr; }
+    virtual Comment* CreateComment(QString content, Post* const post) { return nullptr; }
+    virtual User* SetModerator(User* o,Board* const b,BBS* bbs) {	return nullptr;}
 	virtual bool RepealModerator(User* o) { return false; }
 };
 

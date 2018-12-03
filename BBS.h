@@ -16,12 +16,14 @@ public:
 	~BBS();
     QString GetBBSTitle(){return BBSTitle;}
     void SetBBSTitle(QString s){BBSTitle = s;}
-    void ShowBoards();													//展示论坛已有版块
+    vector<QString> ShowBoards();													//展示论坛已有版块
+    vector<Board*> GetBoardsVector(){return boards;}
     void ShowUsers();													//展示论坛已有用户信息
-    //void InitBBS();													//初始化BBS，设置版块、用户管理员
+    void InitBBS();													//初始化BBS，设置版块、用户管理员
 	//函数重载
 	User* GetUser(int id);
     User* GetUser(const QString &name);
+    Board* GetBoard(QString name);
 	int GetUsersSize() { return users.size(); }							//获得当前论坛注册用户数目
 	int GetBoardSize() { return boards.size(); }						//获得当前论坛版块数目
 	bool AddUser(User* const u);										//添加用户

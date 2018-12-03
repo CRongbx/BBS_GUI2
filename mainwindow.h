@@ -9,6 +9,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class BoardsLabel;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,7 +18,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-//    Ui::MainWindow* GetUi(){return ui;}
 private slots:
     void on_pushButton_5_clicked();
 
@@ -32,11 +33,25 @@ private slots:
 
     void on_Button_logout_clicked();
 
+    void on_pushButton_userinfo_clicked();
+
+    void on_lookbullntin_clicked();
+
+    void on_pushButton_createpost_clicked();
+
+    void on_pushButton_deletepost_clicked();
+
+    void on_pushButton_comment_clicked();
+
+    void on_pushButton_setMo_clicked();
+
+    void on_pushButton_CancelMo_clicked();
 private:
     Ui::MainWindow *ui;
     BBS* bbs;
     QString username;
     QString password;
+    vector<BoardsLabel*> blabels;
 };
 
 #endif // MAINWINDOW_H

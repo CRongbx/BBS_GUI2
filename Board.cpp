@@ -12,9 +12,18 @@ Board::~Board()
 {
 }
 
+Post* Board::GetPost(QString name){
+    for (auto p : posts){
+        if (name == p->GetTitle())
+            return p;
+    }
+    return nullptr;
+}
+
 bool Board::AddPost(Post * p)
 {
 	posts.push_back(p);
+    p->SetBoard(this);
 	return true;
 }
 
@@ -39,13 +48,18 @@ bool Board::IsPostExist(Post * const p)
 	return false;
 }
 
-void Board::Show()
+QString Board::ShowBoardInfo()
 {
-	cout << "Board:" << endl;
-	cout << "名称：" << name << endl;
-	cout << "id: " << id << endl;
-	cout << "帖子数目：" << posts.size() << endl;
-	cout << "帖子：" << endl;
-	for (auto p : posts)
-		cout << p->GetTitle() << endl;
+//    QString s = "id: "+QString::number(id)+" ";
+    QString s = name+" ";
+    s += "Num of Post: "+ QString::number(posts.size());
+    return s;
 }
+
+ vector<QString> Board::ShowBoardPosts(){
+     vector<QString> postinfo;
+     for(auto p : posts){
+        postinfo.push_back(p->Show());
+     }
+     return postinfo;
+ }
