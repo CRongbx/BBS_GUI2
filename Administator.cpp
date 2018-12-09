@@ -30,18 +30,7 @@ User* Administator::SetModerator(User* o,Board* const b,BBS* bbs)
 //    cout << QString::toStdString(o->GetUserName())<<endl;
     bbs->AddUser(o);
     //将基类的属性拷贝到派生类中
-
-
     return o;
-
-//    User *m = new Moderator(b);
-//    m->SignUp(o->GetUserName(),o->GetPassword(),bbs);
-//    m->SetId(o->GetId());
-//    m->SetOnline(o->GetOnline());
-//    o->Logout(o->GetUserName(),o->GetPassword(),bbs);
-//    delete o;
-
-//    return m;
 }
 
 bool Administator::RepealModerator(User * m)
@@ -58,6 +47,5 @@ bool Administator::RepealModerator(User * m)
         cout << "派生类Moderator变成基类OrdinaryUser:FAIL!" << endl;
         return false;
     }
-
 }
 

@@ -97,6 +97,9 @@
          <property name="text">
           <string/>
          </property>
+         <property name="echoMode">
+          <enum>QLineEdit::Password</enum>
+         </property>
          <property name="placeholderText">
           <string>密码：</string>
          </property>

@@ -10,7 +10,7 @@ class BBS
 private:
     QString BBSTitle = "MY BBS";		//论坛名
 	vector<User*> users;			//当前BBS下注册的用户
-	vector<Board*> boards;			//论坛拥有的版块
+    vector<Board*> boards;			//论坛拥有的版块f
 public:
     BBS();
 	~BBS();

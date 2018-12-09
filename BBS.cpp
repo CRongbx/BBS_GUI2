@@ -128,9 +128,9 @@ void BBS::InitBBS(){
     User* or2 = new OrdinaryUser; or2->SignUp("OR2","OR2",this);
     User* or3 = new OrdinaryUser; or3->SignUp("OR3","OR3",this);
     //创建版块下的帖子
-    Post* p11 = or1->CreatePost("POST1","POST1 CONTENT",b1); Post* p12 = or1->CreatePost("POST2","POST2 CONTENT",b1);p11->SetTime(time); p12->SetTime(time);
+    Post* p11 = or2->CreatePost("POST1","POST1 CONTENT",b1); Post* p12 = or1->CreatePost("POST2","POST2 CONTENT",b1);p11->SetTime(time); p12->SetTime(time);
     Post* p21 = or1->CreatePost("POST1","POST1 CONTENT",b2); Post* p22 = or1->CreatePost("POST2","POST2 CONTENT",b2);p21->SetTime(time); p22->SetTime(time);
-    Post* p31 = or1->CreatePost("POST1","POST1 CONTENT",b3); Post* p32 = or1->CreatePost("POST2","POST2 CONTENT",b3);p31->SetTime(time); p32->SetTime(time);
+    Post* p31 = or3->CreatePost("POST1","POST1 CONTENT",b3); Post* p32 = or1->CreatePost("POST2","POST2 CONTENT",b3);p31->SetTime(time); p32->SetTime(time);
     //创建帖子下的评论
     or1->CreateComment("Ugly GUI",p11); or2->CreateComment("23333333333333",p11);or1->CreateComment("6666666666",p12);or2->CreateComment("balabala~",p12);
     or2->CreateComment("GUI is so difficult!!!!",p21); or1->CreateComment("23333333333333",p21);or1->CreateComment("6666666666",p22);or2->CreateComment("balabala~",p22);
