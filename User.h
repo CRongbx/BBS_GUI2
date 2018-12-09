@@ -50,7 +50,7 @@ public:
     virtual Post* CreatePost(QString title, QString content, Board* const board) { return nullptr; }
     virtual Comment* CreateComment(QString content, Post* const post) { return nullptr; }
     virtual User* SetModerator(User* o,Board* const b,BBS* bbs) {	return nullptr;}
-	virtual bool RepealModerator(User* o) { return false; }
+    virtual OrdinaryUser* RepealModerator(User* o,BBS* bbs) { return false; }
 };
 
 #endif

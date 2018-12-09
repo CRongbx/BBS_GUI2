@@ -392,8 +392,10 @@ void MainWindow::on_pushButton_CancelMo_clicked(){
             //存在该用户
             if(typeid(*mo).name()==typeid(Moderator).name()){
                 //是版主
-                if(ad->RepealModerator(mo)){
-                    //转换成功
+                mo = ad->RepealModerator(mo,bbs);
+                if(mo){
+                    //转换成功                    
+                    cout <<typeid(*mo).name()<<endl;
                     box.setText(tr("SUCCESS!"));
                     box.exec();
                 }else{

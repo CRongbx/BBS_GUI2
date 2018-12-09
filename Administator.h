@@ -14,7 +14,7 @@ public:
 	Administator();
 	~Administator();
     virtual User* SetModerator(User* o,Board* const b,BBS* bbs)override final;	//将普通用户设置为版主
-	virtual bool RepealModerator(User* o)override final;		//将版主撤销为管理员
+    virtual OrdinaryUser* RepealModerator(User* o,BBS* bbs)override final;		//将版主撤销为管理员
 };
 
 #endif // !ADMINISTATOR_H
