@@ -4,6 +4,7 @@
 #include <QString>
 #include <vector>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 //前置声明
@@ -21,6 +22,7 @@ private:
     QString password;									//用户密码
     QString userName;									//用户名
 	bool online = false;								//当前该用户是否在线
+//    ofstream fuser_out("user_out.txt",ios::trunc);       //输出用户信息
 public:
 	User();
 	//初始化列表
@@ -51,6 +53,10 @@ public:
     virtual Comment* CreateComment(QString content, Post* const post) { return nullptr; }
     virtual User* SetModerator(User* o,Board* const b,BBS* bbs) {	return nullptr;}
     virtual OrdinaryUser* RepealModerator(User* o,BBS* bbs) { return false; }
+    /*运算符重载*/
+    friend ostream& operator << (ostream & output, const User &user);
+    //设置为友元函数，可以访问类的私有数据;可以使用标准库fstream中的成员
+    friend ofstream& operator << (ofstream& fout,const User &user);         //常量引用，保证可以传入User类型的常量
 };
 
 #endif

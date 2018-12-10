@@ -53,3 +53,18 @@ Comment* Post::GetComment(QString name){
     }
     return nullptr;
 }
+
+ofstream& operator <<(ofstream& fout,const Post &post){
+    //用“$”分隔变量
+    fout << post.id<<"$"<<post.title.toStdString();
+    fout <<"$"<<post.content.toStdString()<< "$";
+    fout <<post.user->GetUserName().toStdString()<<"$";
+    fout <<ShowTime(post.time).toStdString()<<"$$";
+    //保存该post下评论
+    for (auto c : post.comments){
+        fout << c->GetContent().toStdString()<<"$";
+        fout << ShowTime(c->GetTime()).toStdString()<<"$";
+        fout << c->GetOrdinaryUser()->GetUserName().toStdString()<<"$$";
+    }
+    return fout;
+}

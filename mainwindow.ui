@@ -335,6 +335,13 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>恢复</string>
+    </property>
+    <addaction name="actions_restart"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -345,6 +352,14 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actions_restart">
+   <property name="text">
+    <string>数据恢复</string>
+   </property>
+   <property name="toolTip">
+    <string>数据恢复</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

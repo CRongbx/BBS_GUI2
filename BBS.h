@@ -4,6 +4,8 @@
 #include "User.h"
 #include "Board.h"
 #include <QString>
+#include <fstream>
+using namespace std;
 
 class BBS
 {
@@ -30,6 +32,9 @@ public:
 	bool DeleteUser(User* const u);										//É¾³ıÓÃ»§
 	bool AddBoard(Board* b);											//Ìí¼Ó°æ¿é
 	bool DeleteBoard(Board* b);											//É¾³ı°æ¿é	
+    /* ÔËËã·ûÖØÔØ */
+    friend ofstream& operator <<(ofstream& fout, const BBS &bbs);
+    
 };
 
 #endif // !BBS_H

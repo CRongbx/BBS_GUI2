@@ -63,3 +63,12 @@ QString Board::ShowBoardInfo()
      }
      return postinfo;
  }
+
+ ofstream& operator <<(ofstream& fout, const Board &board){
+     fout << board.name.toStdString()<<"$";
+     fout << board.id<<"$";
+     for (auto p : board.posts){
+         fout << p << endl;
+     }
+     return fout;
+ }

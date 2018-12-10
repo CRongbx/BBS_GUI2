@@ -137,3 +137,15 @@ void BBS::InitBBS(){
     or3->CreateComment("hhhhhhhhhhh",p31); or2->CreateComment("23333333333333",p31);or1->CreateComment("6666666666",p32);or2->CreateComment("balabala~",p32);
 
 }
+
+ofstream& operator <<(ofstream& fout, const BBS &bbs){
+    fout << bbs.BBSTitle<<"$";
+    //user
+    for(auto u : bbs.users){
+        fout << u<<endl;
+    }
+    fout << "$";
+    for(auto b : bbs.boards)
+        fout << b<<endl;
+    return fout;
+}

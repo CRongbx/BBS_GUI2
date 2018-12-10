@@ -86,4 +86,15 @@ QString User::Show()
     return s;
 }
 
+ostream& operator << (ostream & output, const User &user){
+    cout << "operator << (ostream & output, const User &user)"<<endl;
+//    output << "hiiiiiiiiii~"<<endl;
+    output << "User--"<<"ID: "<<user.id<<" NAME: "<<user.userName.toStdString();
+    return output;
+}
 
+ofstream& operator << (ofstream& fout,const User &user){
+    /*输出运算符<<的重载应该在内部避免进行输出格式的处理，故不要有endl等*/
+    fout << user.id<<"$"<<user.userName.toStdString()<<"$"<<user.password.toStdString();
+    return fout;
+}

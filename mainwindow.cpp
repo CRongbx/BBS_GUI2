@@ -10,6 +10,7 @@
 #include <QInputDialog>
 #include <QButtonGroup>     //单项选择对话框
 #include <typeinfo>         //返回类型函数typeid
+#include <QComboBox>        //组合框
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

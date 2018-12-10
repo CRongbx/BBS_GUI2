@@ -29,6 +29,7 @@ public:
 	int GetPostsSize() { return posts.size(); }  //获取当前板块下帖子数目
     QString ShowBoardInfo();            //显示版面的基本信息
     vector<QString> ShowBoardPosts();   //显示版面的帖子
+    friend ofstream& operator <<(ofstream& fout, const Board &board);
 };
 
 #endif // !BOARD_H

@@ -39,6 +39,7 @@ public:
 	bool DeleteComment(Comment* c);
 	int GetCommentsSize() { return comments.size(); }		//获得该帖子下的评论数量
     Comment* GetComment(QString name);
+    friend ofstream& operator <<(ofstream& fout,const Post &post);
 };
 
 #endif // !POST_H
