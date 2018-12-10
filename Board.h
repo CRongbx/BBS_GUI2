@@ -6,6 +6,7 @@
 using namespace std;
 
 class Post;
+class User;
 
 class Board
 {
@@ -13,10 +14,13 @@ private:
     QString name;		//版块名
 	int id;				//版块id
 	vector<Post*> posts;//版块下的帖子
+    vector<User*> moderators;   //本版块的管理员（允许多个管理员）
 public:
 	Board();
     Board(QString name) : name(name) {};
 	~Board();
+    void SetModerator(User* const m){moderators.push_back(m);}
+    void DeleteModertor(User* const m);
     void SetName(const QString name) { this->name = name; }
     QString GetName() { return name; }
     vector<Post*> GetPostsVector(){return posts;}

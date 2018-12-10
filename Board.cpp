@@ -1,5 +1,6 @@
 #include "Board.h"
 #include "Post.h"
+#include "Moderator.h"
 #include <iostream>
 using namespace std;
 
@@ -10,6 +11,13 @@ Board::Board()
 
 Board::~Board()
 {
+}
+
+void Board::DeleteModertor(User* const m){
+    for(vector<User*>::iterator it = moderators.begin(); it != moderators.end(); it++)
+        if((*it)->GetUserName() == m->GetUserName()){
+            moderators.erase(it);
+        }
 }
 
 Post* Board::GetPost(QString name){
@@ -70,5 +78,7 @@ QString Board::ShowBoardInfo()
      for (auto p : board.posts){
          fout << p << endl;
      }
+     for (auto m : board.moderators)
+         fout << m->GetUserName().toStdString()<<"$";
      return fout;
  }

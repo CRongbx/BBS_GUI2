@@ -48,6 +48,7 @@ public:
 	//查看用户信息
     QString Show();
 	/* 虚函数 */
+    virtual Board* GetBoard(){return nullptr;}
 	virtual bool DeletePost(Post * post, Board* const board) { return false; }
     virtual Post* CreatePost(QString title, QString content, Board* const board) { return nullptr; }
     virtual Comment* CreateComment(QString content, Post* const post) { return nullptr; }

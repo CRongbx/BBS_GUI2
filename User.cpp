@@ -94,7 +94,7 @@ ostream& operator << (ostream & output, const User &user){
 }
 
 ofstream& operator << (ofstream& fout,const User &user){
-    /*输出运算符<<的重载应该在内部避免进行输出格式的处理，故不要有endl等*/
+    /*输出运算符<<的重载应该在内部避免进行输出格式的处理，故尽量不要有endl*/
     fout << user.id<<"$"<<user.userName.toStdString()<<"$"<<user.password.toStdString();
     return fout;
 }

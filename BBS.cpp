@@ -139,7 +139,7 @@ void BBS::InitBBS(){
 }
 
 ofstream& operator <<(ofstream& fout, const BBS &bbs){
-    fout << bbs.BBSTitle<<"$";
+    fout << bbs.BBSTitle.toStdString()<<"$";
     //user
     for(auto u : bbs.users){
         fout << u<<endl;
