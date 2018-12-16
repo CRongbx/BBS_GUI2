@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Moderator.h"
 #include "Administator.h"
+#include "Anonymity.h"
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QLabel>
@@ -17,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    bbs.InitBBS();
+    //    bbs.InitBBS();
     fin.open("bbs.txt");
     fin >> bbs;
     fin.close();
@@ -120,6 +121,21 @@ void MainWindow::on_Button_signin_clicked()
 
 }
 
+void MainWindow::on_checkBox_anonymity_clicked()
+{
+    //匿名用户
+    ui->pushButton_createpost->setEnabled(false);
+    ui->pushButton_deletepost->setEnabled(false);
+    ui->pushButton_comment->setEnabled(false);
+    ui->lookbullntin->setEnabled(true);     //看帖
+    ui->label_user->setEnabled(false);
+    ui->pushButton_userinfo->setEnabled(false);
+    ui->Button_logout->setEnabled(false);
+    ui->Button_exit->setEnabled(false);
+    ui->Button_signin->setEnabled(false);
+    ui->Button_signup->setEnabled(false);
+
+}
 void MainWindow::on_Button_exit_clicked()
 {
     //用户退出
@@ -403,7 +419,7 @@ void MainWindow::on_pushButton_CancelMo_clicked(){
                 //是版主
                 mo = ad->RepealModerator(mo,&bbs);
                 if(mo){
-                    //转换成功                    
+                    //转换成功
                     cout <<typeid(*mo).name()<<endl;
                     box.setText(tr("SUCCESS!"));
                     box.exec();

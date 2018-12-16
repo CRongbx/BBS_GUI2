@@ -48,6 +48,8 @@ private slots:
     void on_pushButton_setMo_clicked();
 
     void on_pushButton_CancelMo_clicked();
+    void on_checkBox_anonymity_clicked();
+
 private:
     Ui::MainWindow *ui;
     BBS bbs;

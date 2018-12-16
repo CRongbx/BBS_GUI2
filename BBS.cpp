@@ -191,51 +191,64 @@ ifstream& operator >> (ifstream& fin, BBS& bbs){
     size_t loc_mn = s.find("ModeratorNum:", loc_on);    //13
     size_t loc_bs = s.find("BOARDSIZE:",loc_mn);
 
-    string title;
-    for(size_t i = loc_title+6; i < loc_us; i++)
-        title += s.at(i);
-    bbs.BBSTitle = QString::fromStdString(title);
+    //检查是否找到这些关键字
+    if (loc_title > s.length()) throw "ERROR: Can't find 'title'! ";
+    if (loc_us > s.length()) throw "ERROR: Can't find 'USERSIZE'! ";
+    if (loc_an > s.length()) throw "ERROR: Can't find 'AdministatorNum'! ";
+    if (loc_on > s.length()) throw "ERROR: Can't find 'OrdinaryUserNum'! ";
+    if (loc_mn > s.length()) throw "ERROR: Can't find 'ModeratorNum'! ";
+    if (loc_bs > s.length()) throw "ERROR: Can't find 'BOARDSIZE'! ";
 
-    int usersize = 0;
-    for(size_t i = loc_us + 9; i < loc_an; i++)
-        usersize = usersize*10 + s.at(i) - '0';
-    int AdministatorNum = 0;
-    for(size_t i = loc_an+16; i < loc_on; i++)
-        AdministatorNum = AdministatorNum*10 + s.at(i) - '0';
-    int OrdinaryUserNum = 0;
-    for(size_t i = loc_on+16; i < loc_mn; i++)
-        OrdinaryUserNum = OrdinaryUserNum*10 + s.at(i) - '0';
-    int ModeratorNum = 0;
-    for(size_t i = loc_mn+13; i < loc_bs; i++)
-        ModeratorNum = ModeratorNum*10 + s.at(i) - '0';
-    int boardsize = 0;
-    for(size_t i = loc_bs + 10; i < s.length(); i++)
-        boardsize = boardsize*10 + s.at(i) - '0';
+    try{
+        string title;
+        for(size_t i = loc_title+6; i < loc_us; i++)
+            title += s.at(i);
+        bbs.BBSTitle = QString::fromStdString(title);
 
-    for(int i = 0; i < AdministatorNum; i++){
-        User* user = new Administator;
-        fin >> *user;
-        bbs.users.push_back(user);
-    }
-    for(int i = 0; i < OrdinaryUserNum; i++){
-        User* user = new OrdinaryUser;
-        fin >> *user;
-        bbs.users.push_back(user);
-    }
-    for(int i = 0; i < ModeratorNum; i++){
-        User* user =  new Moderator;
-        fin >> *user;
-        bbs.users.push_back(user);
-    }
+        int usersize = 0;
+        for(size_t i = loc_us + 9; i < loc_an; i++)
+            usersize = usersize*10 + s.at(i) - '0';
+        int AdministatorNum = 0;
+        for(size_t i = loc_an+16; i < loc_on; i++)
+            AdministatorNum = AdministatorNum*10 + s.at(i) - '0';
+        int OrdinaryUserNum = 0;
+        for(size_t i = loc_on+16; i < loc_mn; i++)
+            OrdinaryUserNum = OrdinaryUserNum*10 + s.at(i) - '0';
+        int ModeratorNum = 0;
+        for(size_t i = loc_mn+13; i < loc_bs; i++)
+            ModeratorNum = ModeratorNum*10 + s.at(i) - '0';
+        int boardsize = 0;
+        for(size_t i = loc_bs + 10; i < s.length(); i++)
+            boardsize = boardsize*10 + s.at(i) - '0';
 
-    for(int i = 0; i < boardsize; i++){
-        Board* board = new Board;
-        fin >> *board;
-        bbs.boards.push_back(board);
-        for(auto mo : bbs.users)
-            for(auto bm : board->GetModerators())
-                if(bm == mo->GetUserName())
-                    mo ->SetBoard(board);
+        for(int i = 0; i < AdministatorNum; i++){
+            User* user = new Administator;
+            fin >> *user;
+            bbs.users.push_back(user);
+        }
+        for(int i = 0; i < OrdinaryUserNum; i++){
+            User* user = new OrdinaryUser;
+            fin >> *user;
+            bbs.users.push_back(user);
+        }
+        for(int i = 0; i < ModeratorNum; i++){
+            User* user =  new Moderator;
+            fin >> *user;
+            bbs.users.push_back(user);
+        }
+
+        for(int i = 0; i < boardsize; i++){
+            Board* board = new Board;
+            fin >> *board;
+            bbs.boards.push_back(board);
+            for(auto mo : bbs.users)
+                for(auto bm : board->GetModerators())
+                    if(bm == mo->GetUserName())
+                        mo ->SetBoard(board);
+        }
+        return fin;
     }
-    return fin;
+    catch (string msg){
+        cerr << msg << endl;
+    }
 }

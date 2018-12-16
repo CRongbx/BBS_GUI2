@@ -528,13 +528,6 @@
          <property name="spacing">
           <number>5</number>
          </property>
-         <item row="1" column="0">
-          <widget class="QPushButton" name="Button_signup">
-           <property name="text">
-            <string>注册</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="Button_signin">
            <property name="text">
@@ -542,6 +535,23 @@
            </property>
            <property name="autoDefault">
             <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="Button_signup">
+           <property name="text">
+            <string>注册</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="Button_exit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>退出</string>
            </property>
           </widget>
          </item>
@@ -555,13 +565,13 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="Button_exit">
+         <item row="2" column="0" colspan="2">
+          <widget class="QCheckBox" name="checkBox_anonymity">
            <property name="enabled">
-            <bool>false</bool>
+            <bool>true</bool>
            </property>
            <property name="text">
-            <string>退出</string>
+            <string>匿名</string>
            </property>
           </widget>
          </item>
@@ -750,31 +760,16 @@
      <height>26</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>恢复</string>
-    </property>
-    <addaction name="actions_restart"/>
-   </widget>
-   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
+    <enum>LeftToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actions_restart">
-   <property name="text">
-    <string>数据恢复</string>
-   </property>
-   <property name="toolTip">
-    <string>数据恢复</string>
-   </property>
-  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
