@@ -2,6 +2,7 @@
 #include "Board.h"
 #include "Post.h"
 #include <iostream>
+#include <typeinfo>
 using namespace std;
 
 Moderator::Moderator()
@@ -11,6 +12,14 @@ Moderator::Moderator()
 
 Moderator::~Moderator()
 {
+}
+
+QString Moderator::Show(){
+    QString s = "User Name: "+this->GetUserName()+"\n";
+    s = s + "ID: "+QString::number(this->GetId())+"\n";
+    s += "Class: "+QString::fromStdString(typeid(*this).name())+"\n";
+    s += "Moderate Boards: " + board->GetName() + "\n";
+    return s;
 }
 
 bool Moderator::DeletePost(Post * post, Board* const board)
@@ -26,8 +35,7 @@ bool Moderator::DeletePost(Post * post, Board* const board)
 		}
 		else {
 			//不是版主管理的版块
-			if ((post->GetUser() == dynamic_cast<OrdinaryUser*>(this))
-				&& (post->GetCommentsSize() == 0)) {
+            if ((post->GetUser() == this->GetUserName()) && (post->GetCommentsSize() == 0)) {
 				board->DeletePost(post);
 				if (post)
 					delete post;

@@ -17,21 +17,29 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    bbs = new BBS;
-    bbs->InitBBS();
+//    bbs.InitBBS();
+    fin.open("bbs.txt");
+    fin >> bbs;
+    fin.close();
 }
 
 MainWindow::~MainWindow()
 {
+    //关闭前导出数据到文件
+    fout.open("bbs.txt"); //覆盖读写
+    fout << bbs;        //运算符重载
+    fout.close();
     delete ui;
-    delete bbs;
 }
 
 void MainWindow::on_pushButton_5_clicked()
 {
     //显示BBS信息
-    QString str = bbs->GetBBSTitle()+"\nNum of User: "
-            +QString::number(bbs->GetUsersSize());
+    QString str = bbs.GetBBSTitle()+"\nNum of User: "
+            +QString::number(bbs.GetUsersSize());
+    str = str + "\nAdministatorNum: " + QString::number(bbs.GetAdministatorNum());
+    str = str + "\nOrdinaryUserNum: " + QString::number(bbs.GetOrdinaryUserNum());
+    str = str + "\nModeratorNum: " + QString::number(bbs.GetModeratorNum());
     ui->label->setText(str);
 }
 
@@ -39,7 +47,7 @@ void MainWindow::on_Button_signup_clicked()
 {
     //注册
     User* user = new OrdinaryUser;
-    if (user->SignUp(username,password,bbs)){
+    if (user->SignUp(username,password,&bbs)){
         //注册成功
         QMessageBox box;
         box.setWindowTitle(tr("Sign Up"));
@@ -69,7 +77,7 @@ void MainWindow::on_password_editingFinished()
 void MainWindow::on_Button_signin_clicked()
 {
     //用户登录
-    User * user = bbs->GetUser(username);
+    User * user = bbs.GetUser(username);
     if(user){
         if(user->SignIn(username,password)){
             //success
@@ -115,7 +123,7 @@ void MainWindow::on_Button_signin_clicked()
 void MainWindow::on_Button_exit_clicked()
 {
     //用户退出
-    User * user = bbs->GetUser(username);
+    User * user = bbs.GetUser(username);
     QMessageBox box;
     if(user){
         if(user->GetOnline()){
@@ -156,10 +164,10 @@ void MainWindow::on_Button_exit_clicked()
 void MainWindow::on_Button_logout_clicked()
 {
     //用户注销
-    User * user = bbs->GetUser(username);
+    User * user = bbs.GetUser(username);
     QMessageBox box;
     if(user){
-        if(user->Logout(username,password,bbs)){
+        if(user->Logout(username,password,&bbs)){
             //注销成功
             delete user;
             box.setWindowTitle(tr("Logout"));
@@ -197,13 +205,13 @@ void MainWindow::on_Button_logout_clicked()
 void MainWindow::on_pushButton_userinfo_clicked()
 {
     //显示用户信息
-    User* user = bbs->GetUser(username);
+    User* user = bbs.GetUser(username);
     ui->label_user->setText(user->Show());
 }
 
 void MainWindow::on_lookbullntin_clicked()
 {
-    vector<Board*> boards = bbs->GetBoardsVector();
+    vector<Board*> boards = bbs.GetBoardsVector();
     if(blabels.size()>0){
         //已显示版面了
         for(vector<BoardsLabel*>::iterator it = blabels.begin();it != blabels.end();it++){
@@ -229,7 +237,7 @@ void MainWindow::on_pushButton_createpost_clicked(){
     boardname = QInputDialog::getText(NULL,"Create Post","Please input the post belonging board:"
                                       ,QLineEdit::Normal,"board name",&isok);
     if(isok){
-        if(bbs->GetBoard(boardname)){
+        if(bbs.GetBoard(boardname)){
             //存在该版面
             posttitle = QInputDialog::getText(NULL,"Create Post","Please input the post title:"
                                               ,QLineEdit::Normal,"post title",&isok);
@@ -237,8 +245,8 @@ void MainWindow::on_pushButton_createpost_clicked(){
                 content = QInputDialog::getText(NULL,"Create Post","Please input the post content:"
                                                 ,QLineEdit::Normal,"post content",&isok);
                 if (isok){
-                    User * user = bbs->GetUser(username);
-                    user->CreatePost(posttitle,content,bbs->GetBoard(boardname));
+                    User * user = bbs.GetUser(username);
+                    user->CreatePost(posttitle,content,bbs.GetBoard(boardname));
                     QMessageBox box;
                     box.setWindowTitle(tr("Create Post"));
                     box.setText(tr("SUCCESS!"));
@@ -265,13 +273,13 @@ void MainWindow::on_pushButton_deletepost_clicked(){
     boardname = QInputDialog::getText(NULL,"Delete Post","Please input the post belonging board:"
                                       ,QLineEdit::Normal,"board name",&isok);
     if(isok){
-        Board* board = bbs->GetBoard(boardname);
+        Board* board = bbs.GetBoard(boardname);
         if(board){
             postname = QInputDialog::getText(NULL,"Delete Post","Please input the post title:"
                                              ,QLineEdit::Normal,"post title",&isok);
             Post* post = board->GetPost(postname);
             if(post){
-                User* user = bbs->GetUser(username);
+                User* user = bbs.GetUser(username);
                 cout << typeid(*user).name()<<endl;
                 if(user->DeletePost(post,board)){
                     //删帖成功
@@ -307,9 +315,9 @@ void MainWindow::on_pushButton_comment_clicked(){
     boardname = QInputDialog::getText(NULL,"Create Comment","Please input the post belonging board:"
                                       ,QLineEdit::Normal,"board name",&isok);
     if(isok){
-        if(bbs->GetBoard(boardname)){
+        if(bbs.GetBoard(boardname)){
             //存在该版面
-            Board* board = bbs->GetBoard(boardname);
+            Board* board = bbs.GetBoard(boardname);
             posttitle = QInputDialog::getText(NULL,"Create Comment","Please input the post title:"
                                               ,QLineEdit::Normal,"post title",&isok);
             Post * post = board->GetPost(posttitle);
@@ -318,7 +326,7 @@ void MainWindow::on_pushButton_comment_clicked(){
                 content = QInputDialog::getText(NULL,"Create Comment","Please input the post title:"
                                                 ,QLineEdit::Normal,"post title",&isok);
                 if(isok){
-                    User *user = bbs->GetUser(username);
+                    User *user = bbs.GetUser(username);
                     user->CreateComment(content,post);
                     box.setText("SUCCESS!");
                     box.exec();
@@ -340,7 +348,7 @@ void MainWindow::on_pushButton_comment_clicked(){
 
 void MainWindow::on_pushButton_setMo_clicked(){
     //设置版主
-    User* ad = bbs->GetUser(username);
+    User* ad = bbs.GetUser(username);
     bool isok;
     QString boardname, orname;
     QMessageBox box;
@@ -348,16 +356,16 @@ void MainWindow::on_pushButton_setMo_clicked(){
     boardname = QInputDialog::getText(NULL,"Set Moderator","Please input the board name"
                                       ,QLineEdit::Normal,"board name",&isok);
     if(isok){
-        Board* board = bbs->GetBoard(boardname);
+        Board* board = bbs.GetBoard(boardname);
         if(board){
             //存在该板块
             orname = QInputDialog::getText(NULL,"Set Moderator","Please input the user name"
                                            ,QLineEdit::Normal,"user name",&isok);
-            User* ordinary = bbs->GetUser(orname);
+            User* ordinary = bbs.GetUser(orname);
             if(ordinary){
                 if(isok){
                     User* o = new Moderator;
-                    o = ad->SetModerator(ordinary,board,bbs);
+                    o = ad->SetModerator(ordinary,board,&bbs);
                     cout << typeid(*o).name()<<endl;
                     //设置成功
                     box.setText(tr("SUCCESS!"));
@@ -380,7 +388,7 @@ void MainWindow::on_pushButton_setMo_clicked(){
 
 void MainWindow::on_pushButton_CancelMo_clicked(){
     //撤销版主
-    User* ad = bbs->GetUser(username);
+    User* ad = bbs.GetUser(username);
     bool isok;
     QString name;
     QMessageBox box;
@@ -388,12 +396,12 @@ void MainWindow::on_pushButton_CancelMo_clicked(){
     name = QInputDialog::getText(NULL,"Repeal Moderator","Please input the moderator name"
                                  ,QLineEdit::Normal,"moderator name",&isok);
     if(isok){
-        User* mo = bbs->GetUser(name);
+        User* mo = bbs.GetUser(name);
         if(mo){
             //存在该用户
             if(typeid(*mo).name()==typeid(Moderator).name()){
                 //是版主
-                mo = ad->RepealModerator(mo,bbs);
+                mo = ad->RepealModerator(mo,&bbs);
                 if(mo){
                     //转换成功                    
                     cout <<typeid(*mo).name()<<endl;

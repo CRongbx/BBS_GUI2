@@ -4,6 +4,8 @@
 #ifndef MYTIME_H
 #define MYTIME_H
 #include <QString>
+#include <fstream>
+using namespace std;
 
 /*用struct封装而不用class封装的原因：struct的默认访问权限是public，
 class是private，在这里，我们希望定义的所有成员是public的*/
@@ -18,4 +20,5 @@ typedef struct MyTime {
 MyTime GetTime();
 void DeleteTime(MyTime* time);
 QString ShowTime(MyTime const time);
+void SetTime (string s, MyTime& time);
 #endif // !MYTIME_H

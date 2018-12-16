@@ -14,8 +14,8 @@ Board::~Board()
 }
 
 void Board::DeleteModertor(User* const m){
-    for(vector<User*>::iterator it = moderators.begin(); it != moderators.end(); it++)
-        if((*it)->GetUserName() == m->GetUserName()){
+    for(vector<QString>::iterator it = moderators.begin(); it != moderators.end(); it++)
+        if((*it) == m->GetUserName()){
             moderators.erase(it);
         }
 }
@@ -73,12 +73,71 @@ QString Board::ShowBoardInfo()
  }
 
  ofstream& operator <<(ofstream& fout, const Board &board){
-     fout << board.name.toStdString()<<"$";
-     fout << board.id<<"$";
-     for (auto p : board.posts){
-         fout << p << endl;
-     }
+     fout << "BOARD:"<<endl;
+     fout << "NAME:"<<board.name.toStdString();
+     fout << "ID:"<<board.id;
+     fout << "MODERSIZE:"<<board.moderators.size();
+     fout <<"POSTSIZE:"<<board.posts.size();
+     fout << "MODERATORS:";
      for (auto m : board.moderators)
-         fout << m->GetUserName().toStdString()<<"$";
+         fout<<m.toStdString()<< "$";
+     fout <<endl;
+     for (auto p : board.posts)
+         fout << *p << endl;
      return fout;
+ }
+
+ ifstream& operator >> (ifstream& fin, Board& board){
+     string s;
+     fin >> s;
+     while(s != "BOARD:"){
+         s.clear();
+         fin >> s;
+     }
+     s.clear();
+     fin.get();     //endl
+     fin >> s;
+
+     size_t loc_name = s.find("NAME:",0);
+     size_t loc_id = s.find("ID:", loc_name);
+     size_t loc_mos = s.find("MODERSIZE:",loc_id);
+     size_t loc_ps = s.find("POSTSIZE:",loc_mos);
+     size_t loc_mo = s.find("MODERATORS:",loc_ps);
+
+     string name;
+     for(size_t i = loc_name + 5; i < loc_id; i++)
+         name += s.at(i);
+     board.name = QString::fromStdString(name);
+
+     int id = 0;
+     for(size_t i = loc_id + 3; i < loc_mos; i++)
+         id = id*10 + s.at(i) - '0';
+     board.id = id;
+
+     int modersize = 0;
+     for(size_t i = loc_mos + 10; i < loc_ps; i++)
+         modersize = modersize*10 + s.at(i) - '0';
+
+     int postsize = 0;
+     for(size_t i = loc_ps + 9; i < loc_mo; i++)
+         postsize = postsize*10 + s.at(i) - '0';
+
+
+     string m;
+     for(size_t i = loc_mo + 11; i < s.length(); i++){
+         if(s.at(i) == '$'){
+             board.moderators.push_back(QString::fromStdString(m));
+             m.clear();
+         }
+         else
+            m += s.at(i);
+     }
+
+    for(int i = 0; i < postsize; i++){
+        Post* post = new Post;
+        fin >> *post;
+        board.posts.push_back(post);
+    }
+
+    return fin;
  }

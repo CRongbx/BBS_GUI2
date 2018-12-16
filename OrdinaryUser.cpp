@@ -3,6 +3,7 @@
 #include "Post.h"
 #include "BBS.h"
 #include <iostream>
+#include <typeinfo>
 using namespace std;
 
 OrdinaryUser::OrdinaryUser()
@@ -14,9 +15,17 @@ OrdinaryUser::~OrdinaryUser()
 {
 }
 
+QString OrdinaryUser::Show(){
+    QString s = "User Name: "+this->GetUserName()+"\n";
+    s = s + "ID: "+QString::number(this->GetId())+"\n";
+    s += "Class: "+QString::fromStdString(typeid(*this).name())+"\n";
+
+    return s;
+}
+
 bool OrdinaryUser::DeletePost(Post * post,Board* const board)
 {
-	if ((post->GetUser() == this) && (post->GetCommentsSize() == 0)) {
+    if ((post->GetUser() == this->GetUserName()) && (post->GetCommentsSize() == 0)) {
 		//自己发布、评论数为0
 		if (board->IsPostExist(post)) {
 			board->DeletePost(post);  //从该板块下删除
@@ -40,7 +49,7 @@ Post * OrdinaryUser::CreatePost(QString title, QString content, Board * const bo
 	post->SetContent(content);
 	post->SetId(board->GetPostsSize());
 	post->SetTitle(title);
-	post->SetUser(this);
+    post->SetUser(this->GetUserName());
 	post->SetTime(GetTime());
 
 	return post;
@@ -50,6 +59,6 @@ Comment * OrdinaryUser::CreateComment(QString content, Post * const post)
 {
 	Comment* com = new Comment(content);
 	post->AddComment(com);
-	com->SetOrdinaryUser(this);
+    com->SetUserName(this->GetUserName());
 	return com;
 }

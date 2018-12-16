@@ -2,6 +2,7 @@
 #include "BBS.h"
 #include <iostream>
 #include <typeinfo>
+#include <string>
 
 User::User()
 {
@@ -86,15 +87,50 @@ QString User::Show()
     return s;
 }
 
-ostream& operator << (ostream & output, const User &user){
-    cout << "operator << (ostream & output, const User &user)"<<endl;
-//    output << "hiiiiiiiiii~"<<endl;
-    output << "User--"<<"ID: "<<user.id<<" NAME: "<<user.userName.toStdString();
-    return output;
-}
+//ostream& operator << (ostream & output, const User &user){
+//    cout << "operator << (ostream & output, const User &user)"<<endl;
+////    output << "hiiiiiiiiii~"<<endl;
+//    output << "User--"<<"ID: "<<user.id<<" NAME: "<<user.userName.toStdString();
+//    return output;
+//}
 
 ofstream& operator << (ofstream& fout,const User &user){
     /*输出运算符<<的重载应该在内部避免进行输出格式的处理，故尽量不要有endl*/
-    fout << user.id<<"$"<<user.userName.toStdString()<<"$"<<user.password.toStdString();
+    fout << "USER:"<<endl;
+    fout << "ID:"<<user.id;
+    fout << "USERNAME:"<<user.userName.toStdString();
+    fout << "PASSWORD:"<<user.password.toStdString();
     return fout;
+}
+
+ifstream& operator >> (ifstream& fin, User &user){
+    string s;
+    fin >> s;
+    while(s != "USER:"){
+        s.clear();
+        fin >> s;
+    }
+    s.clear();
+    fin >> s;
+
+    size_t loc_id = s.find("ID:",0);
+    size_t loc_username = s.find("USERNAME:",loc_id);
+    size_t loc_password = s.find("PASSWORD:",loc_username);
+
+    int id = 0;
+    for(size_t i = loc_id+3; i < loc_username; i++)
+        id = id*10 + s.at(i) - '0';
+    user.id = id;
+
+    string username = "";
+    for(size_t i = loc_username+9; i < loc_password ; i++)
+        username += s.at(i);
+    user.userName = QString::fromStdString(username);
+
+    string password = "";
+    for(size_t i = loc_password+9; i < s.length(); i++)
+        password += s.at(i);
+    user.password = QString::fromStdString(password);
+
+    return fin;
 }

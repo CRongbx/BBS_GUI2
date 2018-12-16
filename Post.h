@@ -14,7 +14,7 @@ private:
 	int id;				//帖子id
     QString title;		//帖子标题
     QString content;		//帖子内容
-	OrdinaryUser* user;	//发帖人
+    QString username;	//发帖人
     MyTime time;			//创建时间
 	vector<Comment*> comments;	//帖子下的评论
     Board* board;           //所属版面
@@ -31,15 +31,16 @@ public:
     void SetTitle(const QString t) { title = t; }
     QString GetContent() { return content; }
     void SetContent(const QString c) { content = c; }
-	OrdinaryUser* GetUser() { return user; }
-	void SetUser(OrdinaryUser* const ou) { user = ou; }
+    QString GetUser() { return username; }
+    void SetUser(QString user) { username = user; }
     void SetTime(MyTime t) { time = t; }
     MyTime GetTime() { return time; }
 	bool AddComment(Comment* c);
 	bool DeleteComment(Comment* c);
 	int GetCommentsSize() { return comments.size(); }		//获得该帖子下的评论数量
     Comment* GetComment(QString name);
-    friend ofstream& operator <<(ofstream& fout,const Post &post);
+    friend ofstream& operator << (ofstream& fout,const Post &post);
+    friend ifstream& operator >> (ifstream& fin, Post& post);
 };
 
 #endif // !POST_H

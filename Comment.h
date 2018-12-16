@@ -12,7 +12,7 @@ class Comment
 private:
     QString content;
     MyTime time ;
-	OrdinaryUser* user;		//评论人
+    QString username;		//评论人
 public:
 	Comment();
     Comment(QString c) :content(c) { time = GetTime(); }
@@ -20,9 +20,12 @@ public:
     MyTime GetTime() { return time; }
     QString GetContent() { return content; }
     void SetContent(const QString s) { content = s; }
-	OrdinaryUser* GetOrdinaryUser() { return user; }
-	void SetOrdinaryUser(OrdinaryUser* u) { user = u; }
+    QString GetUserName() { return username; }
+    void SetUserName(QString un) { username = un; }
     QString Show();
+    /* 运算符重载 */
+    friend ofstream& operator << (ofstream& fout, const Comment& comment);
+    friend ifstream& operator >> (ifstream& fin, Comment& comment);
 };
 
 #endif // !COMMENT_H

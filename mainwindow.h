@@ -3,7 +3,9 @@
 
 #include <QMainWindow>
 #include <QLineEdit>
+#include <fstream>
 #include "BBS.h"
+using namespace std;
 
 namespace Ui {
 class MainWindow;
@@ -48,10 +50,12 @@ private slots:
     void on_pushButton_CancelMo_clicked();
 private:
     Ui::MainWindow *ui;
-    BBS* bbs;
+    BBS bbs;
     QString username;
     QString password;
     vector<BoardsLabel*> blabels;
+    ofstream fout;       //保存BBS数据的输出文件
+    ifstream fin;        //保存BBS数据的输入文件
 };
 
 #endif // MAINWINDOW_H

@@ -12,9 +12,10 @@ public:
 	Moderator();
     Moderator(Board *const b):board(b){}
 	~Moderator();
-//	void SetBoard(Board* const b) { board = b; }
     virtual Board* GetBoard() override final { return board; }
 	virtual bool DeletePost(Post * post, Board* const board) override final;		//重写且最后一次重写删帖函数
+    virtual QString Show() override final;
+    virtual void SetBoard(Board* const board) override final { this->board = board; }
 };
 
 #endif // ! MODERATOR

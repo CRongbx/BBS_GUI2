@@ -10,9 +10,9 @@ using namespace std;
 class BBS
 {
 private:
-    QString BBSTitle = "MY BBS";		//论坛名
+    QString BBSTitle = "C++_BBS";		//论坛名
 	vector<User*> users;			//当前BBS下注册的用户
-    vector<Board*> boards;			//论坛拥有的版块f
+    vector<Board*> boards;			//论坛拥有的版块
 public:
     BBS();
 	~BBS();
@@ -20,7 +20,6 @@ public:
     void SetBBSTitle(QString s){BBSTitle = s;}
     vector<QString> ShowBoards();													//展示论坛已有版块
     vector<Board*> GetBoardsVector(){return boards;}
-    void ShowUsers();													//展示论坛已有用户信息
     void InitBBS();													//初始化BBS，设置版块、用户管理员
 	//函数重载
 	User* GetUser(int id);
@@ -32,9 +31,12 @@ public:
 	bool DeleteUser(User* const u);										//删除用户
 	bool AddBoard(Board* b);											//添加版块
 	bool DeleteBoard(Board* b);											//删除版块	
+    int GetOrdinaryUserNum (void);  //获得普通用户人数
+    int GetAdministatorNum (void);  //获得管理员人数
+    int GetModeratorNum(void);      //获得版主人数
     /* 运算符重载 */
-    friend ofstream& operator <<(ofstream& fout, const BBS &bbs);
-    
+    friend ofstream& operator <<(ofstream& fout, BBS &bbs);
+    friend ifstream& operator >>(ifstream& fin, BBS& bbs);
 };
 
 #endif // !BBS_H
