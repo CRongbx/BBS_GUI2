@@ -28,35 +28,44 @@ ofstream& operator <<(ofstream& fout, const Comment& comment){
 }
 
 ifstream& operator >>(ifstream& fin, Comment& comment){
-    string s;
-    fin >> s;
-    while(s != "COMMENT:"){
-        s.clear();
+    try{
+        string s;
         fin >> s;
-    }
-    s.clear();
-    getline(fin,s,'$');     //读入数据，直到遇到$停止（\n和空白符不会停止）
-//    cout <<s <<endl;
-    
-    size_t loc_content = s.find("CONTENT",0);
-    size_t loc_time = s.find("TIME:",loc_content);
-    size_t loc_user = s.find("USER:",loc_time);
-    
-    string content = "";
-    for(size_t i = loc_content+8; i < loc_time; i++)
-        content += s.at(i);
-    comment.content = QString::fromStdString(content);
-    
-    string time = "";
-    for(size_t i = loc_time + 5; i < loc_user; i++)
-        time += s.at(i);
-    SetTime(time,comment.time);
+        while(s != "COMMENT:"){
+            s.clear();
+            fin >> s;
+        }
+        s.clear();
+        getline(fin,s,'$');     //读入数据，直到遇到$停止（\n和空白符不会停止）
+        //    cout <<s <<endl;
 
-    string user = "";
-    for(size_t i = loc_user + 5; i < s.length(); i++)
-        user += s.at(i);
-    comment.username = QString::fromStdString(user);
-    
-    fin.get();      //舍弃截断字符$
-    return fin;
+        size_t loc_content = s.find("CONTENT",0);
+        size_t loc_time = s.find("TIME:",loc_content);
+        size_t loc_user = s.find("USER:",loc_time);
+
+        if (loc_content > s.length()) throw "ERROR: Can't find 'CONTENT'! ";
+        if (loc_time > s.length()) throw "ERROR: Can't find 'TIME'! ";
+        if (loc_user > s.length()) throw "ERROR: Can't find 'USER'! ";
+
+        string content = "";
+        for(size_t i = loc_content+8; i < loc_time; i++)
+            content += s.at(i);
+        comment.content = QString::fromStdString(content);
+
+        string time = "";
+        for(size_t i = loc_time + 5; i < loc_user; i++)
+            time += s.at(i);
+        SetTime(time,comment.time);
+
+        string user = "";
+        for(size_t i = loc_user + 5; i < s.length(); i++)
+            user += s.at(i);
+        comment.username = QString::fromStdString(user);
+
+        fin.get();      //舍弃截断字符$
+        return fin;
+    }
+    catch (char const* msg){
+        cerr << msg << endl;
+    }
 }

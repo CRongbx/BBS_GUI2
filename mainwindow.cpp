@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //    bbs.InitBBS();
+//        bbs.InitBBS();
     fin.open("bbs.txt");
     fin >> bbs;
     fin.close();

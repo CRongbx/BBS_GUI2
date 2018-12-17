@@ -4,49 +4,49 @@
 
 Post::Post()
 {
-	time = GetTime();
+    time = GetTime();
 }
 
 
 Post::~Post()
 {
-//    for(auto c :comments)
-//        if(c)
-//            delete c;
+    //    for(auto c :comments)
+    //        if(c)
+    //            delete c;
 }
 
 QString Post::Show()
 {
-  QString s = "id: "+QString::number(id)+"  ";
-  s += title + "  ";
-  s += "Poster: " + username +"  ";
-  s += "Creating Time: "+ShowTime(time)+"  ";
-  s += "Num of Comment: " + QString::number(comments.size());
-  return s;
+    QString s = "id: "+QString::number(id)+"  ";
+    s += title + "  ";
+    s += "Poster: " + username +"  ";
+    s += "Creating Time: "+ShowTime(time)+"  ";
+    s += "Num of Comment: " + QString::number(comments.size());
+    return s;
 }
 
- vector<QString> Post::ShowComments(){
+vector<QString> Post::ShowComments(){
     vector<QString> com;
-     for (auto c : comments)
+    for (auto c : comments)
         com.push_back(c->Show());
-     return com;
- }
+    return com;
+}
 
 bool Post::AddComment(Comment * c)
 {
-	comments.push_back(c);
-	return true;
+    comments.push_back(c);
+    return true;
 }
 
 bool Post::DeleteComment(Comment * c)
 {
-	for (vector<Comment*>::iterator it = comments.begin();it != comments.end();it++) {
-		if (c == (*it)) {
-			comments.erase(it);
-			return true;
-		}
-	}
-	return false;
+    for (vector<Comment*>::iterator it = comments.begin();it != comments.end();it++) {
+        if (c == (*it)) {
+            comments.erase(it);
+            return true;
+        }
+    }
+    return false;
 }
 
 Comment* Post::GetComment(QString name){
@@ -73,60 +73,65 @@ ofstream& operator <<(ofstream& fout,const Post &post){
 }
 
 ifstream& operator >> (ifstream& fin, Post& post){
-    string s;
-    fin >> s;
-    while(s != "POST:"){
-        s.clear();
+    try{
+        string s;
         fin >> s;
+        while(s != "POST:"){
+            s.clear();
+            fin >> s;
+        }
+        s.clear();
+        getline(fin,s,'$');     //id
+
+        int temp = 0;
+        for(size_t i = 4; i < s.length(); i++)
+            temp = temp*10 + s.at(i) - '0';
+        post.id = temp;
+
+
+        s.clear();
+        getline(fin, s, '$');   //title
+        string title = "";
+        for(size_t i = 6; i < s.length(); i++)
+            title += s.at(i);
+        post.title = QString::fromStdString(title);
+
+        s.clear();
+        getline(fin, s, '$');   //content
+        string content = "";
+        for(size_t i = 8; i < s.length(); i++)
+            content += s.at(i);
+        post.content = QString::fromStdString(content);
+
+        s.clear();
+        fin >> s;   //username + time
+        size_t loc_username = s.find("USER:",0);
+        size_t loc_time = s.find("TIME:",loc_username);
+        size_t loc_cs = s.find("COMMENTSIZE:",loc_time);
+
+        string username = "";
+        for (size_t i = loc_username + 5; i < loc_time; i++)
+            username += s.at(i);
+        post.username = QString::fromStdString(username);
+
+        string time = "";
+        for(size_t i = loc_time + 5; i < loc_cs; i++)
+            time += s.at(i);
+        SetTime(time, post.time);
+
+        int commentsize = 0;        //commentsize
+        for(int i = loc_cs + 12; i < s.length(); i++)
+            commentsize = commentsize*10 + s.at(i) - '0';
+
+        for(int i = 0; i < commentsize; i++){       //comments
+            Comment* comment = new Comment;
+            fin >> *comment;
+            post.comments.push_back(comment);
+        }
+
+        return fin;
     }
-    s.clear();
-    getline(fin,s,'$');     //id
-
-    int temp = 0;
-    for(size_t i = 4; i < s.length(); i++)
-        temp = temp*10 + s.at(i) - '0';
-    post.id = temp;
-
-
-    s.clear();
-    getline(fin, s, '$');   //title
-    string title = "";
-    for(size_t i = 6; i < s.length(); i++)
-        title += s.at(i);
-    post.title = QString::fromStdString(title);
-
-    s.clear();
-    getline(fin, s, '$');   //content
-    string content = "";
-    for(size_t i = 8; i < s.length(); i++)
-        content += s.at(i);
-    post.content = QString::fromStdString(content);
-
-    s.clear();
-    fin >> s;   //username + time
-    size_t loc_username = s.find("USER:",0);
-    size_t loc_time = s.find("TIME:",loc_username);
-    size_t loc_cs = s.find("COMMENTSIZE:",loc_time);
-
-    string username = "";
-    for (size_t i = loc_username + 5; i < loc_time; i++)
-        username += s.at(i);
-    post.username = QString::fromStdString(username);
-
-    string time = "";
-    for(size_t i = loc_time + 5; i < loc_cs; i++)
-        time += s.at(i);
-    SetTime(time, post.time);
-
-    int commentsize = 0;        //commentsize
-    for(int i = loc_cs + 12; i < s.length(); i++)
-        commentsize = commentsize*10 + s.at(i) - '0';
-
-    for(int i = 0; i < commentsize; i++){       //comments
-        Comment* comment = new Comment;
-        fin >> *comment;
-        post.comments.push_back(comment);
+    catch (char const* msg){
+        cerr << msg << endl;
     }
-
-    return fin;
 }

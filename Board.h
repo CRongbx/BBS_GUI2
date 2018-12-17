@@ -20,7 +20,7 @@ public:
 	Board();
     Board(QString name) : name(name) {};
 	~Board();
-    void SetModerator(User* const m){moderators.push_back(m->GetUserName());}
+    void SetModerator(QString name){this->moderators.push_back(name);}
     void DeleteModertor(User* const m);
     void SetName(const QString name) { this->name = name; }
     QString GetName() { return name; }

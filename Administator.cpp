@@ -22,7 +22,7 @@ User* Administator::SetModerator(User* o,Board* const b,BBS* bbs)
     User* temp = o;
     bbs->DeleteUser(o);
     o = new Moderator(b);
-    b->SetModerator(o);
+    b->SetModerator(temp->GetUserName());
     o->SetId(temp->GetId());
     o->SetOnline(temp->GetOnline());
     o->SetPassword(temp->GetPassword());

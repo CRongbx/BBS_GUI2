@@ -175,31 +175,32 @@ ofstream& operator <<(ofstream& fout, BBS &bbs){
 }
 
 ifstream& operator >> (ifstream& fin, BBS& bbs){
-    string s;
-    fin >> s;
-    while(s != "BBS:"){
+    try{
+        string s;
+        fin >> s;
+        while(s != "BBS:"){
+            s.clear();
+            fin >> s;
+        }
         s.clear();
         fin >> s;
-    }
-    s.clear();
-    fin >> s;
 
-    size_t loc_title = s.find("TITLE:",0);
-    size_t loc_us = s.find("USERSIZE:", loc_title);
-    size_t loc_an = s.find("AdministatorNum:", loc_us);    //16
-    size_t loc_on = s.find("OrdinaryUserNum:",loc_an);
-    size_t loc_mn = s.find("ModeratorNum:", loc_on);    //13
-    size_t loc_bs = s.find("BOARDSIZE:",loc_mn);
+        size_t loc_title = s.find("TITLE:",0);
+        size_t loc_us = s.find("USERSIZE:", loc_title);
+        size_t loc_an = s.find("AdministatorNum:", loc_us);    //16
+        size_t loc_on = s.find("OrdinaryUserNum:",loc_an);
+        size_t loc_mn = s.find("ModeratorNum:", loc_on);    //13
+        size_t loc_bs = s.find("BOARDSIZE:",loc_mn);
 
-    //检查是否找到这些关键字
-    if (loc_title > s.length()) throw "ERROR: Can't find 'title'! ";
-    if (loc_us > s.length()) throw "ERROR: Can't find 'USERSIZE'! ";
-    if (loc_an > s.length()) throw "ERROR: Can't find 'AdministatorNum'! ";
-    if (loc_on > s.length()) throw "ERROR: Can't find 'OrdinaryUserNum'! ";
-    if (loc_mn > s.length()) throw "ERROR: Can't find 'ModeratorNum'! ";
-    if (loc_bs > s.length()) throw "ERROR: Can't find 'BOARDSIZE'! ";
+        //检查是否找到这些关键字
+        if (loc_title > s.length()) throw "ERROR: Can't find 'title'! ";
+        if (loc_us > s.length()) throw "ERROR: Can't find 'USERSIZE'! ";
+        if (loc_an > s.length()) throw "ERROR: Can't find 'AdministatorNum'! ";
+        if (loc_on > s.length()) throw "ERROR: Can't find 'OrdinaryUserNum'! ";
+        if (loc_mn > s.length()) throw "ERROR: Can't find 'ModeratorNum'! ";
+        if (loc_bs > s.length()) throw "ERROR: Can't find 'BOARDSIZE'! ";
 
-    try{
+
         string title;
         for(size_t i = loc_title+6; i < loc_us; i++)
             title += s.at(i);
@@ -244,11 +245,16 @@ ifstream& operator >> (ifstream& fin, BBS& bbs){
             for(auto mo : bbs.users)
                 for(auto bm : board->GetModerators())
                     if(bm == mo->GetUserName())
-                        mo ->SetBoard(board);
+                        if(typeid(*mo) == typeid(Moderator)){
+                            mo ->SetBoard(board);
+                            break;
+                        }
+                        else
+                            throw  "ERROR: Wrong Moderator!";
         }
         return fin;
     }
-    catch (string msg){
+    catch (char const* msg){
         cerr << msg << endl;
     }
 }
