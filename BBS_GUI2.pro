@@ -37,7 +37,8 @@ SOURCES += \
     MyTime.cpp \
     boardslabel.cpp \
     postslabel.cpp \
-    Anonymity.cpp
+    Anonymity.cpp \
+    Csocket.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     MyTime.h \
     boardslabel.h \
     postslabel.h \
-    Anonymity.h
+    Anonymity.h \
+    Csocket.h
 
 FORMS += \
         mainwindow.ui
