@@ -2,13 +2,16 @@
 #define SOCKETCLIENT_H
 
 #include <WinSock2.h>
+#include <fstream>
 #pragma comment(lib, "ws2_32.lib")
+using namespace std;
 
 class SocketClient
 {
 public:
     SocketClient();
-    void RecieveFile();
+    void RecieveFile();                     //从服务器接受文件，更新本地bbs.txt
+    void SendFile(ifstream& fin);     //向服务器发送本地文件bbs.txt
 private:
     WORD sockVersion = MAKEWORD(2, 2);      //调用的WinSocket版本：2.2版 （支持多协议，且有良好的向后兼容性）
     SOCKET sclient;                         //套接字

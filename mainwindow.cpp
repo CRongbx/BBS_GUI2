@@ -30,9 +30,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     //VERSION-3 关闭前将数据上传到服务器
-   // fout.open("bbs.txt"); //覆盖读写
-   // fout << bbs;        //运算符重载
-  //  fout.close();
+    fout.open("bbs.txt"); //覆盖读写
+    fout << bbs;        //运算符重载
+    fout.close();
+
+    fin.open("bbs.txt");
+    socketClient.SendFile(fin);
+    fin.close();
+
     delete ui;
 }
 
