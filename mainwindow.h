@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <fstream>
 #include "BBS.h"
+#include "SocketClient.h"
 using namespace std;
 
 namespace Ui {
@@ -12,6 +13,7 @@ class MainWindow;
 }
 
 class BoardsLabel;
+
 
 class MainWindow : public QMainWindow
 {
@@ -58,6 +60,7 @@ private:
     vector<BoardsLabel*> blabels;
     ofstream fout;       //保存BBS数据的输出文件
     ifstream fin;        //保存BBS数据的输入文件
+    SocketClient socketClient;
 };
 
 #endif // MAINWINDOW_H

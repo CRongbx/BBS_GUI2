@@ -5,6 +5,7 @@
 #include "Moderator.h"
 #include "Administator.h"
 #include "Anonymity.h"
+#include "SocketClient.h"
 #include <QMessageBox>
 #include <QLineEdit>
 #include <QLabel>
@@ -19,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 //        bbs.InitBBS();
+    /*VERSION-3 打开客户端时从服务器读入文件 */
+    socketClient.RecieveFile();     //从服务器端读入文件数据，更新本地数据缓存文件bbs.txt
     fin.open("bbs.txt");
     fin >> bbs;
     fin.close();
@@ -26,10 +29,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    //关闭前导出数据到文件
-    fout.open("bbs.txt"); //覆盖读写
-    fout << bbs;        //运算符重载
-    fout.close();
+    //VERSION-3 关闭前将数据上传到服务器
+   // fout.open("bbs.txt"); //覆盖读写
+   // fout << bbs;        //运算符重载
+  //  fout.close();
     delete ui;
 }
 

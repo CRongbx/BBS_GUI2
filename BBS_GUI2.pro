@@ -38,7 +38,7 @@ SOURCES += \
     boardslabel.cpp \
     postslabel.cpp \
     Anonymity.cpp \
-    Csocket.cpp
+    SocketClient.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +55,10 @@ HEADERS += \
     boardslabel.h \
     postslabel.h \
     Anonymity.h \
-    Csocket.h
+    SocketClient.h
 
 FORMS += \
         mainwindow.ui
+
+LIBS += libwsock32 libWs2_32
+#For Sockets
